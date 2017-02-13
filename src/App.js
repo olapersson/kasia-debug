@@ -1,31 +1,33 @@
 import React, { Component } from 'react';
-import { connectWpQuery } from 'kasia/connect';
-import logo from './logo.svg';
+import { connectWpPost } from 'kasia/connect';
+import { Page } from 'kasia/types';
 import './App.css';
 
-class App extends Component {
-  shouldComponentUpdate(nextProps, nextState) {
-    console.log('shouldComponentUpdate', nextProps, nextState);
-  }
-
+class RawPage extends Component {
   render() {
-    console.log('props', this.props);
+    console.log('page', this.props);
 
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        {this.props.kasia.page ? this.props.kasia.page.title.rendered : null }
       </div>
     );
   }
 }
 
-export default connectWpQuery(
-  (wpapi) => wpapi.pages().slug('sobre').embed().get(),
-  (thisProps, newProps) => console.log('shouldUpdate', thisProps, newProps) || true
-)(App);
+const WpPage = connectWpPost(
+  Page,
+  (props) => props.slug
+)(RawPage);
+
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        <WpPage slug="sobre"/>
+      </div>
+    );
+  }
+}
+
+export default App;

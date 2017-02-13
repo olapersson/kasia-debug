@@ -5,7 +5,10 @@ import wpapi from 'wpapi'
 
 const WP = new wpapi({ endpoint: 'https://api.chickenorpasta.com.br/wp-json' })
 
-const { kasiaReducer, kasiaSagas } = kasia({ wpapi: WP })
+const { kasiaReducer, kasiaSagas } = kasia({
+  wpapi: WP,
+  /* keyEntitiesBy: 'slug'*/
+})
 
 const rootSaga = function * () {
   yield [...kasiaSagas]
